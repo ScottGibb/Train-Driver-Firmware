@@ -10,18 +10,14 @@
 #![no_main]
 commitment_issues::include_metadata!();
 
-
-
-use defmt::{info};
+use defmt::info;
 use nb::block;
 
 use defmt_rtt as _;
 use panic_probe as _;
 
-
 use cortex_m_rt::entry;
 use stm32f1xx_hal::{pac, prelude::*, timer::Timer};
-
 
 #[entry]
 fn main() -> ! {
@@ -63,5 +59,3 @@ fn metadata() {
     info!("Tag description: {}", metadata::tag_describe());
     info!("Last author:     {}", metadata::last_author());
 }
-
-
