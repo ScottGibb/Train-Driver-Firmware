@@ -1,0 +1,29 @@
+---
+name: Continuous Build
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_call:
+
+jobs:
+  Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install Rust
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          rustup target add thumbv7m-none-eabi
+      - name: Install probe-rs
+        run: cargo install probe-rs-cli
+      - name: Cargo Build
+        run: |
+          source "$HOME"/.cargo/env
+          cargo build
+      - name: Cargo Build Dev
+        run: |
+          source "$HOME"/.cargo/env
+          cargo build
