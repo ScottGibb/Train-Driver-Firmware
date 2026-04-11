@@ -50,3 +50,8 @@ PRE_COMMANDS:
     cwd: root
     secured_env: true
     run_before_linters: True
+  # Required for commitment issues (as its a build dependency of this project)
+  - command: apk add pkgconf openssl-dev g++ gcc libc-dev cmake
+    cwd: root
+    secured_env: true
+    run_before_linters: True
