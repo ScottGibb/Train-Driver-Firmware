@@ -10,6 +10,13 @@ path = "src/main.rs"
 test = false
 bench = false
 
+[lib]
+path = "src/lib.rs"
+test = false
+bench = false
+doctest = false
+
+
 [dependencies]
 embedded-hal = "1"
 nb = "1"
