@@ -17,11 +17,11 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           curl --proto '=https' --tlsv1.2 -LsSf https://github.com/probe-rs/probe-rs/releases/latest/download/probe-rs-tools-installer.sh | sh
-      - name: Cargo Build
+      - name: Install the thumbv7m-none-eabi target
         run: |
           source "$HOME"/.cargo/env
-          cargo build
-      - name: Cargo Build Dev
+          rustup target add thumbv7m-none-eabi
+      - name: Cargo Build
         run: |
           source "$HOME"/.cargo/env
           cargo build
