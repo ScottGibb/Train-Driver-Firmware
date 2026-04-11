@@ -38,6 +38,14 @@ OUTPUT_DETAIL: detailed
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
 
 PRE_COMMANDS:
+  - command: rustup default stable
+    cwd: root
+    secured_env: true
+    run_before_linters: True
+  - command: rustup component add clippy rustfmt
+    cwd: root
+    secured_env: true
+    run_before_linters: True
   - command: rustup target add thumbv7m-none-eabi
     cwd: root
     secured_env: true
