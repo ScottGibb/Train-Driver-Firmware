@@ -8,12 +8,19 @@
 #![deny(unsafe_code)]
 #![no_std]
 #![no_main]
-use panic_halt as _;
+commitment_issues::include_metadata!();
 
+
+use defmt::{info};
 use nb::block;
+
+use defmt_rtt as _;
+use panic_probe as _;
+
 
 use cortex_m_rt::entry;
 use stm32f1xx_hal::{pac, prelude::*, timer::Timer};
+
 
 #[entry]
 fn main() -> ! {
@@ -36,9 +43,24 @@ fn main() -> ! {
 
     // Wait for the timer to trigger an update and change the state of the LED
     loop {
+        metadata();
         block!(timer.wait()).unwrap();
         led.set_high();
         block!(timer.wait()).unwrap();
         led.set_low();
     }
 }
+
+fn metadata() {
+    info!("Hello, world!");
+
+    info!("\n Here is the binary's metadata:\n");
+    info!("Schema version:  {}", metadata::schema());
+    info!("Compile time:    {}", metadata::compile_time());
+    info!("Commit hash:     {}", metadata::short_hash());
+    info!("Is dirty build:  {}", metadata::is_dirty());
+    info!("Tag description: {}", metadata::tag_describe());
+    info!("Last author:     {}", metadata::last_author());
+}
+
+

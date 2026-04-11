@@ -2,25 +2,29 @@
 name = "firmware"
 version = "0.1.0"
 edition = "2024"
+autotests = false
+
+[[bin]]
+name = "firmware"
+path = "src/main.rs"
+test = false
+bench = false
 
 [dependencies]
-embedded-hal = "1.0"
+embedded-hal = "1"
 nb = "1"
-cortex-m = "0.7.7"
-cortex-m-rt = "0.7.5"
-# Panic behaviour, see https://crates.io/keywords/panic-impl for alternatives
-panic-halt = "1.0.0"
-commitment-issues = { git = "https://github.com/dysonltd/commitment-issues", version = "0.2.0" }
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+commitment-issues = { git = "https://github.com/dysonltd/commitment-issues" }
+
+defmt = "1"
+defmt-rtt = "1"
+panic-probe = { version = "1", features = ["print-defmt"] }
+
 
 [dependencies.stm32f1xx-hal]
 version = "0.11.0"
 features = ["stm32f103", "medium"]
 
-
-[[bin]]
-test = false
-name = "firmware"
-path = "src/main.rs"
-
 [build-dependencies]
-commitment-issues = { git = "https://github.com/dysonltd/commitment-issues", version = "0.2.0" }
+commitment-issues = { git = "https://github.com/dysonltd/commitment-issues" }
