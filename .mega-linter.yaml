@@ -36,3 +36,8 @@ VALIDATE_ALL_CODEBASE: true
 OUTPUT_DETAIL: detailed
 
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+
+PRE_COMMMANDS:
+  - name: Install Rust
+    run: |
+      rustup target add thumbv7m-none-eabi

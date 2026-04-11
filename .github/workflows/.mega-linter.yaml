@@ -158,3 +158,15 @@ jobs:
             echo "A PR with formatting fixes has been created. Please merge it before proceeding."
             exit 1
           fi
+
+  cargo_fmt:
+    name: Cargo Formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: install STM32 toolchain
+        run: |
+          rustup target add thumbv7m-none-eabi
+      - name: Rustfmt check on src
+        run: cargo fmt --manifest-path Cargo.toml -- --check
