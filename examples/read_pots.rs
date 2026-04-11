@@ -4,7 +4,6 @@
 use cortex_m_rt::entry;
 use panic_probe as _;
 
-
 #[entry]
 fn main() -> ! {
     loop {
