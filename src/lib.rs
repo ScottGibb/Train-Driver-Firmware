@@ -6,9 +6,11 @@ use defmt::info;
 use defmt_rtt as _;
 use panic_probe as _;
 use stm32f1xx_hal::adc::Adc;
+use stm32f1xx_hal::afio;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::*;
 use stm32f1xx_hal::rcc;
+use stm32f1xx_hal::timer::Timer;
 
 mod device;
 pub mod health_checker;
@@ -31,10 +33,10 @@ pub fn setup_device() -> Device {
     let peripherals = pac::Peripherals::take().unwrap();
     let core_peripherals = cortex_m::Peripherals::take().unwrap();
     let mut flash = peripherals.FLASH.constrain();
-
     let mut rcc = peripherals
         .RCC
         .freeze(rcc::Config::hse(8.MHz()).sysclk(72.MHz()), &mut flash.acr);
+    let mut afio = peripherals.AFIO.constrain(&mut rcc);
 
     let mut gpioa = peripherals.GPIOA.split(&mut rcc);
     let mut gpiob = peripherals.GPIOB.split(&mut rcc);
@@ -47,8 +49,20 @@ pub fn setup_device() -> Device {
     let channel_1_pwm = gpiob.pb1.into_alternate_push_pull(&mut gpiob.crl);
 
     // led pwm channels
-    let channel_0_led_pwm = gpioa.pa6.into_alternate_push_pull(&mut gpioa.crl);
-    let channel_1_led_pwm = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
+    let channel_0_led_pin = gpioa.pa6.into_alternate_push_pull(&mut gpioa.crl);
+    let channel_1_led_pin = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
+    let tim3 = Timer::new(peripherals.TIM3, &mut rcc);
+
+    let led_pwm_timer = tim3.pwm_hz(
+        (channel_0_led_pin, channel_1_led_pin),
+        &mut afio.mapr,
+        10.kHz(),
+    );
+    let (mut channel_0_led, mut channel_1_led) = led_pwm_timer.split();
+    channel_0_led.set_duty(0);
+    channel_0_led.enable();
+    channel_1_led.set_duty(0);
+    channel_1_led.enable();
 
     // ADC channels
     let channel_0_adc = gpioa.pa0.into_analog(&mut gpioa.crl);
@@ -69,8 +83,8 @@ pub fn setup_device() -> Device {
         onboard_led,
         channel_0_pwm,
         channel_1_pwm,
-        channel_0_led_pwm,
-        channel_1_led_pwm,
+        channel_0_led,
+        channel_1_led,
         channel_0_adc,
         channel_1_adc,
         adc,
