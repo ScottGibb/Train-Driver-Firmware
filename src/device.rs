@@ -8,6 +8,10 @@ use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::gpio::gpioc;
 use stm32f1xx_hal::pac::ADC1;
 use stm32f1xx_hal::pac::SYST;
+use stm32f1xx_hal::pac::TIM3;
+use stm32f1xx_hal::timer::C1;
+use stm32f1xx_hal::timer::C2;
+use stm32f1xx_hal::timer::PwmChannel;
 
 pub struct Device {
     pub onboard_led: gpioc::PC13<Output<PushPull>>,
@@ -17,8 +21,8 @@ pub struct Device {
     pub channel_1_pwm: gpiob::PB1<Alternate<PushPull>>,
 
     // led pwm channels
-    pub channel_0_led_pwm: gpioa::PA6<Alternate<PushPull>>,
-    pub channel_1_led_pwm: gpioa::PA7<Alternate<PushPull>>,
+    pub channel_0_led: PwmChannel<TIM3, C1>,
+    pub channel_1_led: PwmChannel<TIM3, C2>,
 
     // ADC channels
     pub channel_0_adc: gpioa::PA0<Analog>,
