@@ -4,6 +4,7 @@ use crate::device::Device;
 use defmt::info;
 use defmt_rtt as _;
 use panic_probe as _;
+use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::*;
 mod device;
@@ -21,12 +22,12 @@ pub fn log_metadata() {
 
 pub fn setup_device() -> Device {
     // Get access to the device specific peripherals from the peripheral access crate
-    let dp = pac::Peripherals::take().unwrap();
-    let mut rcc = dp.RCC.constrain();
+    let peripherals = pac::Peripherals::take().unwrap();
+    let mut rcc = peripherals.RCC.constrain();
 
-    let mut gpioa = dp.GPIOA.split(&mut rcc);
-    let mut gpiob = dp.GPIOB.split(&mut rcc);
-    let mut gpioc = dp.GPIOC.split(&mut rcc);
+    let mut gpioa = peripherals.GPIOA.split(&mut rcc);
+    let mut gpiob = peripherals.GPIOB.split(&mut rcc);
+    let mut gpioc = peripherals.GPIOC.split(&mut rcc);
 
     let onboard_led = gpioc.pc13.into_push_pull_output(&mut gpioc.crh);
 
@@ -43,6 +44,8 @@ pub fn setup_device() -> Device {
     let channel_0_adc = gpioa.pa0.into_analog(&mut gpioa.crl);
     let channel_1_adc = gpioa.pa1.into_analog(&mut gpioa.crl);
 
+    let adc = Adc::new(peripherals.ADC1, &mut rcc);
+
     Device {
         onboard_led,
         channel_0_pwm,
@@ -51,5 +54,6 @@ pub fn setup_device() -> Device {
         channel_1_led_pwm,
         channel_0_adc,
         channel_1_adc,
+        adc,
     }
 }
