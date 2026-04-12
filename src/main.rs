@@ -11,7 +11,8 @@
 use core::time::Duration;
 
 use cortex_m_rt::entry;
-use firmware::{health_checker::HealthChecker, log_metadata, setup_device};
+use defmt::info;
+use firmware::{health_checker::HealthChecker, log_metadata, pot_scanner, setup_device};
 
 #[entry]
 fn main() -> ! {
@@ -27,8 +28,15 @@ fn main() -> ! {
                 .expect("HEALTH_CHECKER_INTERVAL_MS must be a valid u64"),
         ),
     );
+    let mut pot_scanner =
+        pot_scanner::PotScanner::new(device.adc, device.channel_0_adc, device.channel_1_adc);
 
     loop {
         health_checker.check();
+        let pots = pot_scanner.scan();
+        info!(
+            "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
+            pots.0, pots.1
+        );
     }
 }
