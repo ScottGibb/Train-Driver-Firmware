@@ -8,19 +8,27 @@
 #![no_std]
 #![no_main]
 
+use core::time::Duration;
+
 use cortex_m_rt::entry;
-use firmware::{log_metadata, setup_device};
+use firmware::{health_checker::HealthChecker, log_metadata, setup_device};
 
 #[entry]
 fn main() -> ! {
     // Get access to the core peripherals from the cortex-m crate
-    let mut device = setup_device();
+    let device = setup_device();
     log_metadata();
 
+    let mut health_checker = HealthChecker::new(
+        device.onboard_led,
+        Duration::from_millis(
+            env!("HEALTH_CHECKER_INTERVAL_MS")
+                .parse::<u64>()
+                .expect("HEALTH_CHECKER_INTERVAL_MS must be a valid u64"),
+        ),
+    );
+
     loop {
-        device.onboard_led.set_low();
-        cortex_m::asm::delay(8_000_000);
-        device.onboard_led.set_high();
-        cortex_m::asm::delay(8_000_000);
+        health_checker.check();
     }
 }

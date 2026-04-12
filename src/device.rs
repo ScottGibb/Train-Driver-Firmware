@@ -8,7 +8,6 @@ use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::gpio::gpioc;
 use stm32f1xx_hal::pac::ADC1;
 use stm32f1xx_hal::pac::SYST;
-use stm32f1xx_hal::timer::SysCounter;
 
 pub struct Device {
     pub onboard_led: gpioc::PC13<Output<PushPull>>,
