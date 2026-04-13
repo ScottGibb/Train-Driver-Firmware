@@ -41,17 +41,17 @@ PRE_COMMANDS:
   - command: rustup default stable
     cwd: root
     secured_env: true
-    run_before_linters: True
+    run_before_linters: true
   - command: rustup component add clippy rustfmt
     cwd: root
     secured_env: true
-    run_before_linters: True
+    run_before_linters: true
   - command: rustup target add thumbv7m-none-eabi
     cwd: root
     secured_env: true
-    run_before_linters: True
+    run_before_linters: true
   # Required for commitment issues (as its a build dependency of this project)
   - command: apk add pkgconf openssl-dev g++ gcc libc-dev cmake
     cwd: root
     secured_env: true
-    run_before_linters: True
+    run_before_linters: true
