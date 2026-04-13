@@ -35,15 +35,19 @@ fn main() -> ! {
     let mut channel_1_pwm = device.channel_1_pwm;
     let mut pwm_driver = PwmDriver::new([&mut channel_0_pwm, &mut channel_1_pwm]);
     loop {
-        health_checker.check();
+        health_checker.check().expect("This should not fail");
         match pot_scanner.scan() {
             Ok((channel_0, channel_1)) => {
                 info!(
                     "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
                     channel_0, channel_1
                 );
-                pwm_driver.set_duty(0, channel_0).unwrap();
-                pwm_driver.set_duty(1, channel_1).unwrap();
+                pwm_driver
+                    .set_duty(0, channel_0)
+                    .expect("This should not fail");
+                pwm_driver
+                    .set_duty(1, channel_1)
+                    .expect("This should not fail");
             }
             Err(err) => {
                 info!("Potentiometer scan failed: {}", err);

@@ -24,11 +24,15 @@ where
         }
     }
 
-    pub fn check(&mut self) {
+    pub fn check(&mut self) -> Result<(), P::Error> {
         let now = sys_timer::millis();
-        if now - self.last_led_toggle_time >= self.led_toggle_interval {
-            let _ = self.led_pin.toggle();
+        let elapsed = now
+            .checked_sub(self.last_led_toggle_time)
+            .unwrap_or(self.led_toggle_interval);
+        if elapsed >= self.led_toggle_interval {
+            self.led_pin.toggle()?;
             self.last_led_toggle_time = now;
         }
+        Ok(())
     }
 }
