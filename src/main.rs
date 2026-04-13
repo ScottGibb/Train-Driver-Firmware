@@ -32,10 +32,9 @@ fn main() -> ! {
     );
     let mut pot_scanner =
         pot_scanner::PotScanner::new(device.adc, device.channel_0_adc, device.channel_1_adc);
-    let mut pwm_driver = PwmDriver {
-        channel_0_pwm: device.channel_0_pwm,
-        channel_1_pwm: device.channel_1_pwm,
-    };
+    let mut channel_0_pwm = device.channel_0_pwm;
+    let mut channel_1_pwm = device.channel_1_pwm;
+    let mut pwm_driver = PwmDriver::new([&mut channel_0_pwm, &mut channel_1_pwm]);
     loop {
         health_checker.check();
         match pot_scanner.scan() {
@@ -44,8 +43,8 @@ fn main() -> ! {
                     "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
                     channel_0, channel_1
                 );
-                pwm_driver.set_channel_0_duty(channel_0);
-                pwm_driver.set_channel_1_duty(channel_1);
+                pwm_driver.set_duty(0, channel_0).unwrap();
+                pwm_driver.set_duty(1, channel_1).unwrap();
             }
             Err(err) => {
                 info!("Potentiometer scan failed: {}", err);
