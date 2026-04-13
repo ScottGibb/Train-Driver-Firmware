@@ -33,10 +33,16 @@ fn main() -> ! {
 
     loop {
         health_checker.check();
-        let pots = pot_scanner.scan();
-        info!(
-            "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
-            pots.0, pots.1
-        );
+        match pot_scanner.scan() {
+            Ok((channel_0, channel_1)) => {
+                info!(
+                    "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
+                    channel_0, channel_1
+                );
+            }
+            Err(err) => {
+                info!("Potentiometer scan failed: {}", err);
+            }
+        }
     }
 }

@@ -16,6 +16,8 @@ mod device;
 pub mod health_checker;
 pub mod pot_scanner;
 pub mod sys_timer;
+mod types;
+
 commitment_issues::include_metadata!();
 
 pub fn log_metadata() {
