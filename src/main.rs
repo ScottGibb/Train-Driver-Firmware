@@ -19,7 +19,7 @@ use firmware::{
 #[entry]
 fn main() -> ! {
     // Get access to the core peripherals from the cortex-m crate
-    let mut device = setup_device();
+    let device = setup_device();
     log_metadata();
 
     let mut health_checker = HealthChecker::new(

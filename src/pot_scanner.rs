@@ -1,22 +1,25 @@
 use cortex_m::prelude::_embedded_hal_adc_OneShot;
 use stm32f1xx_hal::{adc::Adc, pac::ADC1};
 
-use crate::{device::DeviceError, types::Percentage};
+use crate::{
+    device::{ChannelOneAdc, ChannelZeroAdc, DeviceError},
+    types::Percentage,
+};
 
 //TODO: Replace this code with generic code that can be used with any ADC and any pins, instead of hardcoding the specific pins and ADC instance. This will make it more reusable and adaptable to different hardware configurations.
 pub const LOW_THRESHOLD: u16 = 0;
 pub const HIGH_THRESHOLD: u16 = 4095;
 pub struct PotScanner {
     adc: Adc<ADC1>,
-    adc_channel_0: stm32f1xx_hal::gpio::gpioa::PA0<stm32f1xx_hal::gpio::Analog>,
-    adc_channel_1: stm32f1xx_hal::gpio::gpioa::PA1<stm32f1xx_hal::gpio::Analog>,
+    adc_channel_0: ChannelZeroAdc,
+    adc_channel_1: ChannelOneAdc,
 }
 
 impl PotScanner {
     pub fn new(
         adc: Adc<ADC1>,
-        adc_channel_0: stm32f1xx_hal::gpio::gpioa::PA0<stm32f1xx_hal::gpio::Analog>,
-        adc_channel_1: stm32f1xx_hal::gpio::gpioa::PA1<stm32f1xx_hal::gpio::Analog>,
+        adc_channel_0: ChannelZeroAdc,
+        adc_channel_1: ChannelOneAdc,
     ) -> Self {
         PotScanner {
             adc,

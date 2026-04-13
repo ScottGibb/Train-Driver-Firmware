@@ -1,8 +1,3 @@
-use stm32f1xx_hal::{
-    pac::TIM2,
-    timer::{C3, C4, PwmChannel},
-};
-
 use crate::{
     device::{ChannelOnePwm, ChannelZeroPwm},
     types::Percentage,
