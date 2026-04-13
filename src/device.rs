@@ -1,29 +1,33 @@
 use defmt::Format;
 use stm32f1xx_hal::adc::Adc;
-use stm32f1xx_hal::gpio::Alternate;
 use stm32f1xx_hal::gpio::Analog;
 use stm32f1xx_hal::gpio::Output;
 use stm32f1xx_hal::gpio::PushPull;
 use stm32f1xx_hal::gpio::gpioa;
-use stm32f1xx_hal::gpio::gpiob;
 use stm32f1xx_hal::gpio::gpioc;
 use stm32f1xx_hal::pac::ADC1;
 use stm32f1xx_hal::pac::SYST;
 use stm32f1xx_hal::pac::TIM3;
 use stm32f1xx_hal::timer::C1;
 use stm32f1xx_hal::timer::C2;
+use stm32f1xx_hal::timer::C3;
+use stm32f1xx_hal::timer::C4;
 use stm32f1xx_hal::timer::PwmChannel;
 
+pub type ChannelZeroPwm = PwmChannel<TIM3, C3>;
+pub type ChannelOnePwm = PwmChannel<TIM3, C4>;
+pub type ChannelZeroLed = PwmChannel<TIM3, C1>;
+pub type ChannelOneLed = PwmChannel<TIM3, C2>;
 pub struct Device {
     pub onboard_led: gpioc::PC13<Output<PushPull>>,
 
     // pwm channels
-    pub channel_0_pwm: gpiob::PB0<Alternate<PushPull>>,
-    pub channel_1_pwm: gpiob::PB1<Alternate<PushPull>>,
+    pub channel_0_pwm: ChannelZeroPwm,
+    pub channel_1_pwm: ChannelOnePwm,
 
     // led pwm channels
-    pub channel_0_led: PwmChannel<TIM3, C1>,
-    pub channel_1_led: PwmChannel<TIM3, C2>,
+    pub channel_0_led: ChannelZeroLed,
+    pub channel_1_led: ChannelOneLed,
 
     // ADC channels
     pub channel_0_adc: gpioa::PA0<Analog>,

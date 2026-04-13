@@ -30,3 +30,20 @@ impl TryFrom<u8> for Percentage {
         Percentage::new(value)
     }
 }
+
+impl From<Percentage> for u16 {
+    fn from(value: Percentage) -> Self {
+        value.0 as u16
+    }
+}
+
+impl TryFrom<u16> for Percentage {
+    type Error = PercentageError;
+
+    fn try_from(value: u16) -> Result<Self, Self::Error> {
+        if value > 100 {
+            return Err(PercentageError::InvalidValue);
+        }
+        Ok(Self(value as u8))
+    }
+}

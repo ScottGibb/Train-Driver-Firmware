@@ -6,7 +6,6 @@ use defmt::info;
 use defmt_rtt as _;
 use panic_probe as _;
 use stm32f1xx_hal::adc::Adc;
-use stm32f1xx_hal::afio;
 use stm32f1xx_hal::pac;
 use stm32f1xx_hal::prelude::*;
 use stm32f1xx_hal::rcc;
@@ -15,6 +14,7 @@ use stm32f1xx_hal::timer::Timer;
 mod device;
 pub mod health_checker;
 pub mod pot_scanner;
+pub mod pwm_driver;
 pub mod sys_timer;
 mod types;
 
@@ -40,27 +40,38 @@ pub fn setup_device() -> Device {
         .freeze(rcc::Config::hse(8.MHz()).sysclk(72.MHz()), &mut flash.acr);
     let mut afio = peripherals.AFIO.constrain(&mut rcc);
 
+    let tim3 = Timer::new(peripherals.TIM3, &mut rcc);
+
     let mut gpioa = peripherals.GPIOA.split(&mut rcc);
     let mut gpiob = peripherals.GPIOB.split(&mut rcc);
     let mut gpioc = peripherals.GPIOC.split(&mut rcc);
 
     let onboard_led = gpioc.pc13.into_push_pull_output(&mut gpioc.crh);
 
-    // pwm channels
-    let channel_0_pwm = gpiob.pb0.into_alternate_push_pull(&mut gpiob.crl);
-    let channel_1_pwm = gpiob.pb1.into_alternate_push_pull(&mut gpiob.crl);
-
-    // led pwm channels
     let channel_0_led_pin = gpioa.pa6.into_alternate_push_pull(&mut gpioa.crl);
     let channel_1_led_pin = gpioa.pa7.into_alternate_push_pull(&mut gpioa.crl);
-    let tim3 = Timer::new(peripherals.TIM3, &mut rcc);
+    let channel_0_pwm_pin = gpiob.pb0.into_alternate_push_pull(&mut gpiob.crl);
+    let channel_1_pwm_pin = gpiob.pb1.into_alternate_push_pull(&mut gpiob.crl);
 
-    let led_pwm_timer = tim3.pwm_hz(
-        (channel_0_led_pin, channel_1_led_pin),
+    let pwm_timer = tim3.pwm_hz(
+        (
+            channel_0_led_pin,
+            channel_1_led_pin,
+            channel_0_pwm_pin,
+            channel_1_pwm_pin,
+        ),
         &mut afio.mapr,
         10.kHz(),
     );
-    let (mut channel_0_led, mut channel_1_led) = led_pwm_timer.split();
+
+    let (mut channel_0_led, mut channel_1_led, mut channel_0_pwm, mut channel_1_pwm) =
+        pwm_timer.split();
+
+    channel_0_pwm.set_duty(0);
+    channel_0_pwm.enable();
+    channel_1_pwm.set_duty(0);
+    channel_1_pwm.enable();
+
     channel_0_led.set_duty(0);
     channel_0_led.enable();
     channel_1_led.set_duty(0);

@@ -12,12 +12,14 @@ use core::time::Duration;
 
 use cortex_m_rt::entry;
 use defmt::info;
-use firmware::{health_checker::HealthChecker, log_metadata, pot_scanner, setup_device};
+use firmware::{
+    health_checker::HealthChecker, log_metadata, pot_scanner, pwm_driver::PwmDriver, setup_device,
+};
 
 #[entry]
 fn main() -> ! {
     // Get access to the core peripherals from the cortex-m crate
-    let device = setup_device();
+    let mut device = setup_device();
     log_metadata();
 
     let mut health_checker = HealthChecker::new(
@@ -30,7 +32,10 @@ fn main() -> ! {
     );
     let mut pot_scanner =
         pot_scanner::PotScanner::new(device.adc, device.channel_0_adc, device.channel_1_adc);
-
+    let mut pwm_driver = PwmDriver {
+        channel_0_pwm: device.channel_0_pwm,
+        channel_1_pwm: device.channel_1_pwm,
+    };
     loop {
         health_checker.check();
         match pot_scanner.scan() {
@@ -39,6 +44,8 @@ fn main() -> ! {
                     "Potentiometer values: channel 0 = {}%, channel 1 = {}%",
                     channel_0, channel_1
                 );
+                pwm_driver.set_channel_0_duty(channel_0);
+                pwm_driver.set_channel_1_duty(channel_1);
             }
             Err(err) => {
                 info!("Potentiometer scan failed: {}", err);
