@@ -23,7 +23,7 @@ impl Percentage {
         self.0
     }
 
-    pub fn to_percentage(value: u16, max: u16, min: u16) -> Result<Self, PercentageError> {
+    pub fn to_percentage(value: u16, min: u16, max: u16) -> Result<Self, PercentageError> {
         let clamped = value.clamp(min, max);
         let scaled = ((clamped - min) as u32 * 100) / (max - min) as u32;
         Percentage::new(scaled as u8)
