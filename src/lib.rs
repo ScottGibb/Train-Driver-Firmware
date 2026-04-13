@@ -31,9 +31,8 @@ pub fn log_metadata() {
 }
 
 pub fn setup_device() -> Device {
-    // Get access to the device specific peripherals from the peripheral access crate
-    let peripherals = pac::Peripherals::take().unwrap();
-    let core_peripherals = cortex_m::Peripherals::take().unwrap();
+    let peripherals = pac::Peripherals::take().expect("Setup failed");
+    let core_peripherals = cortex_m::Peripherals::take().expect("Setup failed");
     let mut flash = peripherals.FLASH.constrain();
     let mut rcc = peripherals
         .RCC
