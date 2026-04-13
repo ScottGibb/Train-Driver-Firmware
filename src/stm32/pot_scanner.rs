@@ -1,4 +1,4 @@
-use crate::device::DeviceError;
+use crate::error::DeviceError;
 use crate::types::Percentage;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::adc::Instance;
@@ -33,17 +33,17 @@ where
         let raw_0: u16 = self
             .adc
             .read(&mut self.channel_0)
-            .map_err(|_| DeviceError::AdcError)?;
+            .expect("This should not fail");
         let raw_1: u16 = self
             .adc
             .read(&mut self.channel_1)
-            .map_err(|_| DeviceError::AdcError)?;
+            .expect("This should not fail");
 
         Ok((
-            Percentage::to_percentage(raw_0, Self::HIGH_THRESHOLD, Self::LOW_THRESHOLD)
-                .map_err(|_| DeviceError::ConversionError)?,
-            Percentage::to_percentage(raw_1, Self::HIGH_THRESHOLD, Self::LOW_THRESHOLD)
-                .map_err(|_| DeviceError::ConversionError)?,
+            Percentage::to_percentage(raw_0, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
+                .map_err(|err| DeviceError::ConversionError(err))?,
+            Percentage::to_percentage(raw_1, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
+                .map_err(|err| DeviceError::ConversionError(err))?,
         ))
     }
 }
