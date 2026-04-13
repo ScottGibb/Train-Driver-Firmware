@@ -12,10 +12,10 @@ use core::time::Duration;
 
 use cortex_m_rt::entry;
 use defmt::info;
-use firmware::{
-    health_checker::HealthChecker, log_metadata, pot_scanner, pwm_driver::PwmDriver, setup_device,
-};
-
+use firmware::generic::pwm_driver::PwmDriver;
+use firmware::stm32::health_checker::HealthChecker;
+use firmware::stm32::pot_scanner::PotScanner;
+use firmware::{log_metadata, setup_device};
 #[entry]
 fn main() -> ! {
     // Get access to the core peripherals from the cortex-m crate
@@ -30,8 +30,7 @@ fn main() -> ! {
                 .expect("HEALTH_CHECKER_INTERVAL_MS must be a valid u64"),
         ),
     );
-    let mut pot_scanner =
-        pot_scanner::PotScanner::new(device.adc, device.channel_0_adc, device.channel_1_adc);
+    let mut pot_scanner = PotScanner::new(device.adc, device.channel_0_adc, device.channel_1_adc);
     let mut channel_0_pwm = device.channel_0_pwm;
     let mut channel_1_pwm = device.channel_1_pwm;
     let mut pwm_driver = PwmDriver::new([&mut channel_0_pwm, &mut channel_1_pwm]);

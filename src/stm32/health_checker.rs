@@ -1,10 +1,11 @@
 use core::time::Duration;
 
-use stm32f1xx_hal::hal_02::digital::v2::ToggleableOutputPin;
+use crate::stm32::sys_timer;
+use embedded_hal::digital::StatefulOutputPin;
 
 pub struct HealthChecker<P>
 where
-    P: ToggleableOutputPin,
+    P: StatefulOutputPin,
 {
     led_pin: P,
     led_toggle_interval: Duration,
@@ -13,7 +14,7 @@ where
 
 impl<P> HealthChecker<P>
 where
-    P: ToggleableOutputPin,
+    P: StatefulOutputPin,
 {
     pub fn new(led_pin: P, led_toggle_interval: Duration) -> Self {
         Self {
@@ -24,7 +25,7 @@ where
     }
 
     pub fn check(&mut self) {
-        let now = super::sys_timer::millis();
+        let now = sys_timer::millis();
         if now - self.last_led_toggle_time >= self.led_toggle_interval {
             let _ = self.led_pin.toggle();
             self.last_led_toggle_time = now;
