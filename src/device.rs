@@ -1,4 +1,3 @@
-use defmt::Format;
 use stm32f1xx_hal::adc::Adc;
 use stm32f1xx_hal::gpio::Analog;
 use stm32f1xx_hal::gpio::Output;
@@ -42,10 +41,4 @@ pub struct Device {
     pub adc: Adc<ADC1>,
     // SysTick timer with 1 ms resolution (1 kHz)
     pub sys_tick_timer: SYST,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Format)]
-pub enum DeviceError {
-    AdcError,
-    ConversionError,
 }

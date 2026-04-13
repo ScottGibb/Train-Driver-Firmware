@@ -12,9 +12,9 @@ use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::timer::Timer;
 
 pub mod device;
+mod error;
 pub mod generic;
 pub mod stm32;
-
 pub use generic::types;
 pub use stm32::sys_timer;
 
