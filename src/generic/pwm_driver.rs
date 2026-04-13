@@ -18,11 +18,9 @@ impl<'a, const NUM_CHANNELS: usize> PwmDriver<'a, NUM_CHANNELS> {
     pub fn new(
         // The lifetime of the channel references must be the same as the lifetime of the PwmDriver struct,
         // since the channels are stored as references inside the struct. This ensures that the channels will
-        // not be dropped while the PwmDriver is still using them.
-        // Using a vtable with the dyn keyword to allow me to create a single PwmDriver struct that can
-        // work with any number of channels, without needing to create separate structs for each possible number of channels.
-        // This also allows for more flexible and dynamic usage of the PwmDriver, as the channels can be provided at
-        // runtime rather than being fixed at compile time.
+        // not be dropped while the PwmDriver is still using them. Using a vtable with the dyn keyword to allow
+        // a single PwmDriver struct that can work with any number of channels, without needing to create separate
+        // structs for each possible number of channels.
         channels: [&'a mut dyn SetDutyCycle<Error = Infallible>; NUM_CHANNELS],
     ) -> Self {
         Self {
