@@ -18,8 +18,13 @@ pub type ChannelZeroPwm = PwmChannel<TIM3, C3>;
 pub type ChannelOnePwm = PwmChannel<TIM3, C4>;
 pub type ChannelZeroLed = PwmChannel<TIM3, C1>;
 pub type ChannelOneLed = PwmChannel<TIM3, C2>;
+
+pub type ChannelZeroAdc = gpioa::PA0<Analog>;
+pub type ChannelOneAdc = gpioa::PA1<Analog>;
+
+pub type HealthLed = gpioc::PC13<Output<PushPull>>;
 pub struct Device {
-    pub onboard_led: gpioc::PC13<Output<PushPull>>,
+    pub onboard_led: HealthLed,
 
     // pwm channels
     pub channel_0_pwm: ChannelZeroPwm,
@@ -30,8 +35,8 @@ pub struct Device {
     pub channel_1_led: ChannelOneLed,
 
     // ADC channels
-    pub channel_0_adc: gpioa::PA0<Analog>,
-    pub channel_1_adc: gpioa::PA1<Analog>,
+    pub channel_0_adc: ChannelZeroAdc,
+    pub channel_1_adc: ChannelOneAdc,
 
     // ADC
     pub adc: Adc<ADC1>,
