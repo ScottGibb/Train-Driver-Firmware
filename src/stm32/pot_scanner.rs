@@ -40,9 +40,9 @@ where
             .expect("This should not fail");
 
         Ok((
-            Percentage::to_percentage(raw_0, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
+            Percentage::from_range(raw_0, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
                 .map_err(|err| DeviceError::ConversionError(err))?,
-            Percentage::to_percentage(raw_1, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
+            Percentage::from_range(raw_1, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
                 .map_err(|err| DeviceError::ConversionError(err))?,
         ))
     }

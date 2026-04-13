@@ -5,7 +5,8 @@ pub struct Percentage(u8);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Format)]
 pub enum PercentageError {
-    InvalidValue,
+    OutOfRange,
+    IncorrectThresholds,
 }
 
 impl Percentage {
@@ -15,7 +16,7 @@ impl Percentage {
         if value <= Self::MAX {
             Ok(Self(value))
         } else {
-            Err(PercentageError::InvalidValue)
+            Err(PercentageError::OutOfRange)
         }
     }
 
@@ -23,7 +24,10 @@ impl Percentage {
         self.0
     }
 
-    pub fn to_percentage(value: u16, min: u16, max: u16) -> Result<Self, PercentageError> {
+    pub fn from_range(value: u16, min: u16, max: u16) -> Result<Self, PercentageError> {
+        if min >= max {
+            return Err(PercentageError::IncorrectThresholds);
+        }
         let clamped = value.clamp(min, max);
         let scaled = ((clamped - min) as u32 * 100) / (max - min) as u32;
         Percentage::new(scaled as u8)
