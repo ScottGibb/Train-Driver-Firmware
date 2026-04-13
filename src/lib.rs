@@ -11,12 +11,12 @@ use stm32f1xx_hal::prelude::*;
 use stm32f1xx_hal::rcc;
 use stm32f1xx_hal::timer::Timer;
 
-mod device;
-pub mod health_checker;
-pub mod pot_scanner;
-pub mod pwm_driver;
-pub mod sys_timer;
-mod types;
+pub mod device;
+pub mod generic;
+pub mod stm32;
+
+pub use generic::types;
+pub use stm32::sys_timer;
 
 commitment_issues::include_metadata!();
 
