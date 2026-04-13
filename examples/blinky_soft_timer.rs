@@ -20,7 +20,7 @@ fn main() -> ! {
     loop {
         if millis() - last_led_time >= led_toggle_interval {
             last_led_time = millis();
-            device.onboard_led.toggle();
+            let _ = device.onboard_led.toggle();
             info!("Toggled LED at {} ms", last_led_time.as_millis());
         }
     }
