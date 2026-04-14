@@ -1,9 +1,7 @@
-//! Blinks an LED
+//! Train Driver firmware entry point.
 //!
-//! This assumes that a LED is connected to pc13 as is the case on the blue pill board.
-//!
-//! Note: Without additional hardware, PC13 should not be used to drive an LED, see page 5.1.2 of
-//! the reference manual for an explanation. This is not an issue on the blue pill.
+//! Reads two potentiometers via ADC, maps the values to PWM duty cycles,
+//! and blinks the onboard LED (PC13) as a health indicator.
 
 #![no_std]
 #![no_main]

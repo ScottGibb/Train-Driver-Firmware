@@ -5,6 +5,7 @@ use stm32f1xx_hal::adc::Instance;
 use stm32f1xx_hal::hal_02::adc::Channel;
 use stm32f1xx_hal::hal_02::adc::OneShot;
 
+/// Reads two ADC channels and converts the raw 12-bit values to [`Percentage`]s.
 pub struct PotScanner<ADC: Instance, P0, P1> {
     adc: Adc<ADC>,
     channel_0: P0,
@@ -29,6 +30,9 @@ where
         }
     }
 
+    /// Reads both ADC channels and returns their values as percentages.
+    ///
+    /// Returns `(channel_0, channel_1)` on success.
     pub fn scan(&mut self) -> Result<(Percentage, Percentage), DeviceError> {
         let raw_0: u16 = self
             .adc
