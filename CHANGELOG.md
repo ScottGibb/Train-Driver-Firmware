@@ -2,7 +2,6 @@
 
 ## 0.1.0 (2026-04-14)
 
-
 ### Features
 
 * add blinky example ([5881644](https://github.com/ScottGibb/Train-Driver-Firmware/commit/588164478dd146de557f5ed50e15dee242a84364))
@@ -23,7 +22,6 @@
 * handle errors better ([fed7392](https://github.com/ScottGibb/Train-Driver-Firmware/commit/fed7392ade2678f4ee1c9be151902d677111610e))
 * initial commit ([71db3a6](https://github.com/ScottGibb/Train-Driver-Firmware/commit/71db3a621690aaad66cd8e3e80542a95d920db71))
 * refactor and implement generic PWM Driver ([f7f7997](https://github.com/ScottGibb/Train-Driver-Firmware/commit/f7f79970ab8b53f6b96685a44593817fb0a9ef32))
-
 
 ### Bug Fixes
 
