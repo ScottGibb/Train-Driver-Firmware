@@ -2,13 +2,15 @@ use crate::types::Percentage;
 use core::convert::Infallible;
 use embedded_hal::pwm::SetDutyCycle;
 
+/// Errors returned by [`PwmDriver`] methods.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PwmDriverError {
+    /// The requested channel index is out of bounds.
     InvalidChannel,
 }
 
-/// A generic PWM driver that can control multiple PWM channels using a common interface.
-/// Uses a Percentage type for duty cycle values, which can be easily converted to the appropriate duty cycle values for each channel.
+/// A generic PWM driver that controls multiple channels through a common
+/// [`SetDutyCycle`] interface using [`Percentage`] values for duty cycles.
 pub struct PwmDriver<'a, const NUM_CHANNELS: usize> {
     channels: [&'a mut dyn SetDutyCycle<Error = Infallible>; NUM_CHANNELS],
     channel_duties: [Percentage; NUM_CHANNELS],

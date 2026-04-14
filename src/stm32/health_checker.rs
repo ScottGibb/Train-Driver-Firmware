@@ -3,6 +3,7 @@ use core::time::Duration;
 use crate::stm32::sys_timer;
 use embedded_hal::digital::StatefulOutputPin;
 
+/// Toggles an LED at a fixed interval to indicate the system is alive.
 pub struct HealthChecker<P>
 where
     P: StatefulOutputPin,
