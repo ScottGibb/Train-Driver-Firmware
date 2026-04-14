@@ -5,7 +5,6 @@ use stm32f1xx_hal::gpio::PushPull;
 use stm32f1xx_hal::gpio::gpioa;
 use stm32f1xx_hal::gpio::gpioc;
 use stm32f1xx_hal::pac::ADC1;
-use stm32f1xx_hal::pac::SYST;
 use stm32f1xx_hal::pac::TIM3;
 use stm32f1xx_hal::timer::C1;
 use stm32f1xx_hal::timer::C2;
@@ -39,6 +38,4 @@ pub struct Device {
 
     // ADC
     pub adc: Adc<ADC1>,
-    // SysTick timer with 1 ms resolution (1 kHz)
-    pub sys_tick_timer: SYST,
 }
