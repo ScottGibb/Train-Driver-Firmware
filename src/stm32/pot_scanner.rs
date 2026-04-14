@@ -33,11 +33,11 @@ where
         let raw_0: u16 = self
             .adc
             .read(&mut self.channel_0)
-            .expect("This should not fail");
+            .map_err(|_| DeviceError::AdcError)?;
         let raw_1: u16 = self
             .adc
             .read(&mut self.channel_1)
-            .expect("This should not fail");
+            .map_err(|_| DeviceError::AdcError)?;
 
         Ok((
             Percentage::from_range(raw_0, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)

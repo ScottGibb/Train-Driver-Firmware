@@ -30,6 +30,12 @@ pub fn log_metadata() {
     info!("Last author:     {}", metadata::last_author());
 }
 
+/// Initialises all peripherals and returns a [`Device`] with ownership of each handle.
+///
+/// # Panics
+///
+/// Panics if called more than once, because `Peripherals::take()` returns
+/// `None` on the second call.
 pub fn setup_device() -> Device {
     let peripherals = pac::Peripherals::take().expect("Setup failed");
     let core_peripherals = cortex_m::Peripherals::take().expect("Setup failed");
@@ -100,6 +106,5 @@ pub fn setup_device() -> Device {
         channel_0_adc,
         channel_1_adc,
         adc,
-        sys_tick_timer: syst,
     }
 }
