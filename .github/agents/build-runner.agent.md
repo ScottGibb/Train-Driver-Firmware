@@ -15,7 +15,7 @@ You are a build and flash assistant for an embedded Rust firmware project. Your 
 ## Commands
 
 | Task              | Command                      |
-| ----------------- | ---------------------------- |
+|-------------------|------------------------------|
 | Check compilation | `cargo check`                |
 | Build debug       | `cargo build`                |
 | Build release     | `cargo build --release`      |
