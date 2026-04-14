@@ -45,9 +45,9 @@ where
 
         Ok((
             Percentage::from_range(raw_0, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
-                .map_err(|err| DeviceError::ConversionError(err))?,
+                .map_err(DeviceError::ConversionError)?,
             Percentage::from_range(raw_1, Self::LOW_THRESHOLD, Self::HIGH_THRESHOLD)
-                .map_err(|err| DeviceError::ConversionError(err))?,
+                .map_err(DeviceError::ConversionError)?,
         ))
     }
 }
