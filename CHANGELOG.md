@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/ScottGibb/Train-Driver-Firmware/compare/v0.1.0...v0.1.1) (2026-05-16)
+
+
+### Bug Fixes
+
+* **deps:** bump defmt from 1.0.1 to 1.1.0 ([30beb3e](https://github.com/ScottGibb/Train-Driver-Firmware/commit/30beb3ef8c6f0ffdfc3018475fd33e391fcb5fba))
+* **deps:** bump defmt-rtt from 1.1.0 to 1.2.0 ([d1746cb](https://github.com/ScottGibb/Train-Driver-Firmware/commit/d1746cbaecce6e3319d746cb802d931a506b88cf))
+
 ## 0.1.0 (2026-04-14)
 
 ### Features
