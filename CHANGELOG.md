@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.2](https://github.com/ScottGibb/Train-Driver-Firmware/compare/v0.1.1...v0.1.2) (2026-08-22)
+
+
+### Bug Fixes
+
+* **deps:** bump cortex-m from 0.7.7 to 0.7.8 ([882555b](https://github.com/ScottGibb/Train-Driver-Firmware/commit/882555ba0e50f88b2d778df368eecc1d7da98c2a))
+* **deps:** bump cortex-m from 0.7.8 to 0.7.9 ([79b7b76](https://github.com/ScottGibb/Train-Driver-Firmware/commit/79b7b76c399cb37eb34db996a34d56f016d718b6))
+* **deps:** bump cortex-m-rt from 0.7.5 to 0.7.6 ([eeb522d](https://github.com/ScottGibb/Train-Driver-Firmware/commit/eeb522d70601060d6c02908068c95e0f4b19b330))
+* **deps:** bump defmt from 1.1.0 to 1.1.1 ([0ed3ea8](https://github.com/ScottGibb/Train-Driver-Firmware/commit/0ed3ea84a80ef6618a2ecabe027a26a56ece6896))
+* **deps:** bump defmt-rtt from 1.2.0 to 1.3.0 ([dddae72](https://github.com/ScottGibb/Train-Driver-Firmware/commit/dddae721056c6676789f1800dbd86a8b3756f5c8))
+
 ## [0.1.1](https://github.com/ScottGibb/Train-Driver-Firmware/compare/v0.1.0...v0.1.1) (2026-05-16)
 
 
